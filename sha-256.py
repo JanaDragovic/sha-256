@@ -6,14 +6,16 @@ Secure Hash Standard (SHS) - Federal Information Processing Standard Publication
 def rotr(x, n):
     """
     Rotacija udesno (ROTR - Rotate Right)
+    (x >> n) XOR (x << w - n)
     """
-    return 
+    return (x >> n) | (x << (32 - n)) & 0xFFFFFFFF
 
 def shr(x, n):
     """
     Pomeranje udesno (SHR - Shift Right)
+    x >> n
     """
-    return 
+    return x >> n
 
 def ch(x, y, z):
     """
