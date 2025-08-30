@@ -20,8 +20,9 @@ def shr(x, n):
 def ch(x, y, z):
     """
     Funkcija Ch (Choose)
+    (x AND y) XOR (~x AND z)
     """
-    return 
+    return (x & y) ^ (~x & z)
 
 def maj(x, y, z):
     """
