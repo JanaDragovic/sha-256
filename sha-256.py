@@ -85,7 +85,18 @@ def parse_message(padded_message):
     """
     Parsiranje poruke u blokove
     """
-    return 
+    blocks = []
+    
+    for i in range(0, len(padded_message), 64):
+        block = padded_message[i:i+64]
+        words = []
+
+        for j in range(0, 64, 4):
+            word = int.from_bytes(block[j:j+4], 'big')
+            words.append(word)
+        blocks.append(words)
+
+    return blocks
 
 def sha256_hash_computation(message_blocks):
     """
