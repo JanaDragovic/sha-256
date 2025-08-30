@@ -71,7 +71,15 @@ def padding(message_bytes):
     """
     Dodavanje padding-a poruci (Message Padding)
     """
-    return 
+    message_bit_length = len(message_bytes) * 8
+    
+    padded_message = message_bytes + b'\x80'  # Dodavanje '1' bita
+    while (len(padded_message) * 8) % 512 != 448:
+        padded_message += b'\x00'
+    
+    padded_message += message_bit_length.to_bytes(8, 'big')
+
+    return padded_message
 
 def parse_message(padded_message):
     """
