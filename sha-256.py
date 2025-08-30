@@ -27,8 +27,9 @@ def ch(x, y, z):
 def maj(x, y, z):
     """
     Funkcija Maj (Majority)
+    (x AND y) XOR (x AND z) XOR (y AND z)
     """
-    return 
+    return (x & y) ^ (x & z) ^ (y & z)
 
 def sigma0_256(x):
     """
