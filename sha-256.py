@@ -35,13 +35,13 @@ def sigma0_256(x):
     """
     Funkcija Sigma0 
     """
-    return 
+    return rotr(x, 2) ^ rotr(x, 13) ^ rotr (x, 22)
 
 def sigma1_256(x):
     """
     Funkcija Sigma1
     """
-    return 
+    return rotr(x, 6) ^ rotr (x, 11) ^ rotr(x, 25) 
 
 def sigma0_256_small(x):
     """
