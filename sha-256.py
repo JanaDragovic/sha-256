@@ -86,7 +86,7 @@ def parse_message(padded_message):
     Parsiranje poruke u blokove
     """
     blocks = []
-    
+
     for i in range(0, len(padded_message), 64):
         block = padded_message[i:i+64]
         words = []
@@ -102,14 +102,61 @@ def sha256_hash_computation(message_blocks):
     """
     SHA-256 Hash računanje
     """
-    return 
+    h = [
+        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+        0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+    ]
+
+    for block in message_blocks:
+        w = block[:]
+        for t in range(16, 64): 
+            s0 = sigma0_256_small(w[t-15])
+            s1 = sigma1_256_small(w[t-2])
+            w.append((w[t-16] + s0 + w[t-7] + s1) & 0xFFFFFFFF)
+
+        a, b, c, d, e, f, g, h_temp = h
+        
+        for t in range(64):
+            s1 = sigma1_256(e)
+            ch_val = ch(e, f, g)
+            temp1 = (h_temp + s1 + ch_val + K_256[t] + w[t]) & 0xFFFFFFFF
+            s0 = sigma0_256(a)
+            maj_val = maj(a, b, c)
+            temp2 = (s0 + maj_val) & 0xFFFFFFFF
+
+            h_temp = g
+            g = f
+            f = e
+            e = (d + temp1) & 0xFFFFFFFF
+            d = c
+            c = b
+            b = a
+            a = (temp1 + temp2) & 0xFFFFFFFF
+
+        for i in range(8):
+            h[i] = (h[i] + [a, b, c, d, e, f, g, h_temp][i]) & 0xFFFFFFFF
+
+        return h
+
+def sha256(message):
+    
+    padded_message = padding(message)
+    message_blocks = parse_message(padded_message)
+    final_hash = sha256_hash_computation(message_blocks)
+    return ''.join(f'{x:08x}' for x in final_hash)
 
 # Test funkcije
 def test_sha256():
     """
     Test funkcija sa primerima iz NIST standarda i za poznate test slučajeve
     """
-    return 
+    result1 = sha256("")
+    expected1 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    print(result1 == expected1)
+
+    result2 = sha256("abc")
+    expected2 = "ba7816bf8f01cfea414140de5dae2223b00361a39617829b8a0c5c85a5f5c5c"
+    print(result2 == expected2)
 
 if __name__ == "__main__":
     test_sha256()
