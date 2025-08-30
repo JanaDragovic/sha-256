@@ -47,13 +47,13 @@ def sigma0_256_small(x):
     """
     Funkcija Sigma0 (mala)
     """
-    return 
+    return rotr(x, 7) ^ rotr(x, 18) ^ shr(x, 3)
 
 def sigma1_256_small(x):
     """
     Funkcija Sigma1 (mala)
     """
-    return 
+    return rotr(x, 17) ^ rotr(x, 19) ^ shr(x, 10) 
 
 # Konstante za SHA-256
 K_256 = [
