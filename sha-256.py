@@ -8,7 +8,7 @@ def rotr(x, n):
     Rotacija udesno (ROTR - Rotate Right)
     (x >> n) XOR (x << w - n)
     """
-    return (x >> n) | (x << (32 - n)) & 0xFFFFFFFF
+    return ((x >> n) | (x << (32 - n))) & 0xFFFFFFFF
 
 def shr(x, n):
     """
@@ -136,10 +136,11 @@ def sha256_hash_computation(message_blocks):
         for i in range(8):
             h[i] = (h[i] + [a, b, c, d, e, f, g, h_temp][i]) & 0xFFFFFFFF
 
-        return h
+    return h
 
 def sha256(message):
-    
+
+    message = message.encode('utf-8')
     padded_message = padding(message)
     message_blocks = parse_message(padded_message)
     final_hash = sha256_hash_computation(message_blocks)
@@ -155,7 +156,7 @@ def test_sha256():
     print(result1 == expected1)
 
     result2 = sha256("abc")
-    expected2 = "ba7816bf8f01cfea414140de5dae2223b00361a39617829b8a0c5c85a5f5c5c"
+    expected2 = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
     print(result2 == expected2)
 
 if __name__ == "__main__":
